@@ -7,6 +7,8 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
+from rest_framework.views import APIView
+from rest_framework import generics,mixins
 # Create your views here.
 
 def sample_fun(req):
@@ -122,7 +124,7 @@ class fun6(APIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
         except project_user.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-class genericapiview(generics.GenericAPIView,mixins.ListModelMixin,mixins.creatModelMixin):
+class genericapiview(generics.GenericAPIView,mixins.ListModelMixin,mixins.CreateModelMixin):
     serializer_class=model_serializer
     queryset=project_user.objects.all()
     def get(self,req):
@@ -133,7 +135,7 @@ class genericapiview(generics.GenericAPIView,mixins.ListModelMixin,mixins.creatM
 class update(generics.GenericAPIView,mixins.RetrieveModelMixin,mixins.UpdateModelMixin,mixins.DestroyModelMixin):
     serializer_class=model_serializer
     queryset=project_user.objects.all()
-    Lookup_field='id'
+    lookup_field='id'
     def get(self,req,id=None):
         return self.retrieve(req,id)
     def put(self,req,id=None):
